@@ -1,8 +1,9 @@
 import { Navigate, Outlet } from "react-router";
 import { useAuth } from "./AuthContext";
+import { isEmailVerified } from "./emailVerification";
 
 export default function GuestRoute() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -12,7 +13,10 @@ export default function GuestRoute() {
     );
   }
 
-  if (isAuthenticated) {
+  if (isAuthenticated && user) {
+    if (!isEmailVerified(user)) {
+      return <Navigate to="/verify-email" replace />;
+    }
     return <Navigate to="/" replace />;
   }
 

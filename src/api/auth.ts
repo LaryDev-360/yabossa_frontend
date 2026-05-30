@@ -48,3 +48,33 @@ export async function requestPasswordReset(email: string): Promise<{ detail: str
     body: { email },
   });
 }
+
+export interface PasswordResetConfirmPayload {
+  uid: string;
+  token: string;
+  new_password: string;
+  new_password_confirm: string;
+}
+
+export async function confirmPasswordReset(
+  payload: PasswordResetConfirmPayload,
+): Promise<{ detail: string }> {
+  return publicRequest("/auth/password/reset/confirm/", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export async function requestEmailOtp(email: string): Promise<{ detail: string }> {
+  return apiRequest("/auth/otp/request/", {
+    method: "POST",
+    body: { email },
+  });
+}
+
+export async function verifyEmailOtp(email: string, code: string): Promise<User> {
+  return apiRequest<User>("/auth/otp/verify/", {
+    method: "POST",
+    body: { email, code },
+  });
+}

@@ -16,6 +16,7 @@ interface InputProps {
   disabled?: boolean;
   required?: boolean;
   autoComplete?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
   success?: boolean;
   error?: boolean;
   hint?: string;
@@ -36,6 +37,7 @@ const Input: FC<InputProps> = ({
   disabled = false,
   required = false,
   autoComplete,
+  inputMode,
   success = false,
   error = false,
   hint,
@@ -68,6 +70,7 @@ const Input: FC<InputProps> = ({
         disabled={disabled}
         required={required}
         autoComplete={autoComplete}
+        inputMode={inputMode}
         className={inputClasses}
       />
 

@@ -45,7 +45,7 @@ export default function SignUpForm() {
         businessName: businessName.trim(),
         phoneNumber: phoneNumber.trim() || undefined,
       });
-      navigate("/", { replace: true });
+      navigate("/verify-email", { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);

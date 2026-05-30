@@ -21,19 +21,25 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import GuestRoute from "./auth/GuestRoute";
+import EmailVerifiedRoute from "./auth/EmailVerifiedRoute";
+import VerifyEmail from "./pages/AuthPages/VerifyEmail";
 
 export default function App() {
   return (
     <Router>
       <ScrollToTop />
       <Routes>
+        {/* Public: must work when logged in and with uid/token from email (not behind GuestRoute). */}
+        <Route path="/reset-password" element={<ResetPassword />} />
+
         <Route element={<GuestRoute />}>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
 
         <Route element={<ProtectedRoute />}>
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route element={<EmailVerifiedRoute />}>
           <Route element={<AppLayout />}>
             <Route index path="/" element={<Home />} />
             <Route path="/profile" element={<UserProfiles />} />
@@ -49,6 +55,7 @@ export default function App() {
             <Route path="/videos" element={<Videos />} />
             <Route path="/line-chart" element={<LineChart />} />
             <Route path="/bar-chart" element={<BarChart />} />
+          </Route>
           </Route>
         </Route>
 

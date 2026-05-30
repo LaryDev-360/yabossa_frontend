@@ -91,6 +91,7 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 - **`src/auth/`** — `tokenStorage` (localStorage), `AuthContext`, `ProtectedRoute`, `GuestRoute`.
 - **Vite proxy** — `/api/v1` → `http://127.0.0.1:8001` in `vite.config.ts`.
 - **Auth UI** — `SignInForm` → `POST /auth/token/`; `SignUpForm` → `POST /auth/register/merchant/`; `ResetPassword` → `POST /auth/password/reset/request/`.
+- **Email OTP** — after register/sign-in (if unverified): `/verify-email` auto-sends code via `POST /auth/otp/request/`, verifies with `POST /auth/otp/verify/`; `EmailVerifiedRoute` blocks dashboard until `email_verified_at` is set.
 - **Routes** — protected `AppLayout` routes; guest `/signin`, `/signup`, `/reset-password`.
 - **Header** — `UserDropdown` shows user + sign out (`POST /auth/logout/`).
 - **Production note:** configure Django **CORS** when the SPA is served from a different origin than the API.

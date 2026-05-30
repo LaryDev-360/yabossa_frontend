@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { ApiError } from "../../api/errors";
 import { useAuth } from "../../auth/AuthContext";
+import { isEmailVerified } from "../../auth/emailVerification";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
@@ -25,8 +26,8 @@ export default function SignInForm() {
     setError(null);
     setIsSubmitting(true);
     try {
-      await login(email.trim(), password);
-      navigate(from, { replace: true });
+      const user = await login(email.trim(), password);
+      navigate(isEmailVerified(user) ? from : "/verify-email", { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);
