@@ -2,12 +2,14 @@ import { FormEvent, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { confirmPasswordReset, requestPasswordReset } from "../../api/auth";
 import { ApiError, getFieldError } from "../../api/errors";
+import { useTranslation } from "../../i18n/I18nContext";
 import AuthPageLayout from "./AuthPageLayout";
 import Label from "../../components/form/Label";
 import Input from "../../components/form/input/InputField";
 import Button from "../../components/ui/button/Button";
 import Alert from "../../components/ui/alert/Alert";
 import PageMeta from "../../components/common/PageMeta";
+import LanguageSwitcher from "../../components/common/LanguageSwitcher";
 
 function useResetLinkParams() {
   const [searchParams] = useSearchParams();
@@ -24,6 +26,7 @@ function useResetLinkParams() {
 }
 
 function RequestResetForm() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +44,7 @@ function RequestResetForm() {
       if (err instanceof ApiError) {
         setError(err.message);
       } else {
-        setError("Unable to send reset instructions. Please try again.");
+        setError(t("resetPassword.errorGeneric"));
       }
     } finally {
       setIsSubmitting(false);
@@ -51,38 +54,38 @@ function RequestResetForm() {
   return (
     <>
       <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-        Reset password
+        {t("resetPassword.requestTitle")}
       </h1>
       <p className="mb-6 text-sm text-gray-500 dark:text-gray-400">
-        Enter your account email. If it exists, we will send reset instructions.
+        {t("resetPassword.requestSubtitle")}
       </p>
 
       {message && (
         <div className="mb-5">
-          <Alert variant="success" title="Check your email" message={message} />
+          <Alert variant="success" title={t("resetPassword.successTitle")} message={message} />
         </div>
       )}
       {error && (
         <div className="mb-5">
-          <Alert variant="error" title="Request failed" message={error} />
+          <Alert variant="error" title={t("resetPassword.errorTitle")} message={error} />
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
         <div className="space-y-5">
           <div>
-            <Label>Email</Label>
+            <Label>{t("common.email")}</Label>
             <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@business.com"
+              placeholder={t("resetPassword.emailPlaceholder")}
               disabled={isSubmitting}
               required
             />
           </div>
           <Button className="w-full" size="sm" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Sending…" : "Send reset link"}
+            {isSubmitting ? t("resetPassword.sending") : t("resetPassword.sendLink")}
           </Button>
         </div>
       </form>
@@ -91,6 +94,7 @@ function RequestResetForm() {
 }
 
 function ConfirmResetForm({ uid, token }: { uid: string; token: string }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -126,7 +130,7 @@ function ConfirmResetForm({ uid, token }: { uid: string; token: string }) {
         }
         setFieldErrors(next);
       } else {
-        setError("Unable to reset password. Please request a new link.");
+        setError(t("resetPassword.confirmErrorGeneric"));
       }
     } finally {
       setIsSubmitting(false);
@@ -136,24 +140,25 @@ function ConfirmResetForm({ uid, token }: { uid: string; token: string }) {
   return (
     <>
       <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-        Choose a new password
+        {t("resetPassword.confirmTitle")}
       </h1>
       <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
-        Enter your new password below. This link can only be used once.
+        {t("resetPassword.confirmSubtitle")}
       </p>
-      <p className="mb-6 text-xs text-gray-500 dark:text-gray-400">
-        If your mail app shows a security warning, use <strong>Open in browser</strong> and ensure
-        the dev app is running at <code className="text-brand-500">localhost:5173</code>.
-      </p>
+      <p className="mb-6 text-xs text-gray-500 dark:text-gray-400">{t("resetPassword.mailHint")}</p>
 
       {message && (
         <div className="mb-5">
-          <Alert variant="success" title="Password updated" message={`${message} Redirecting to sign in…`} />
+          <Alert
+            variant="success"
+            title={t("resetPassword.updatedTitle")}
+            message={t("resetPassword.updatedMessage", { detail: message })}
+          />
         </div>
       )}
       {error && (
         <div className="mb-5">
-          <Alert variant="error" title="Reset failed" message={error} />
+          <Alert variant="error" title={t("resetPassword.confirmErrorTitle")} message={error} />
         </div>
       )}
 
@@ -161,14 +166,15 @@ function ConfirmResetForm({ uid, token }: { uid: string; token: string }) {
         <div className="space-y-5">
           <div>
             <Label>
-              New password <span className="text-error-500">*</span>
+              {t("resetPassword.newPassword")}{" "}
+              <span className="text-error-500">{t("common.required")}</span>
             </Label>
             <Input
               type="password"
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="At least 8 characters"
+              placeholder={t("resetPassword.newPasswordPlaceholder")}
               disabled={isSubmitting || Boolean(message)}
               error={Boolean(fieldErrors.new_password)}
               hint={fieldErrors.new_password}
@@ -178,14 +184,15 @@ function ConfirmResetForm({ uid, token }: { uid: string; token: string }) {
           </div>
           <div>
             <Label>
-              Confirm password <span className="text-error-500">*</span>
+              {t("resetPassword.confirmPassword")}{" "}
+              <span className="text-error-500">{t("common.required")}</span>
             </Label>
             <Input
               type="password"
               autoComplete="new-password"
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
-              placeholder="Repeat password"
+              placeholder={t("resetPassword.confirmPasswordPlaceholder")}
               disabled={isSubmitting || Boolean(message)}
               error={Boolean(fieldErrors.new_password_confirm)}
               hint={fieldErrors.new_password_confirm}
@@ -199,7 +206,7 @@ function ConfirmResetForm({ uid, token }: { uid: string; token: string }) {
             type="submit"
             disabled={isSubmitting || Boolean(message)}
           >
-            {isSubmitting ? "Saving…" : "Update password"}
+            {isSubmitting ? t("resetPassword.saving") : t("resetPassword.updatePassword")}
           </Button>
         </div>
       </form>
@@ -208,15 +215,19 @@ function ConfirmResetForm({ uid, token }: { uid: string; token: string }) {
 }
 
 export default function ResetPassword() {
+  const { t } = useTranslation();
   const { uid, token, isConfirmMode } = useResetLinkParams();
 
   return (
     <AuthPageLayout>
       <PageMeta
-        title={isConfirmMode ? "Set new password | TwoFStock" : "Reset password | TwoFStock"}
-        description="Reset your TwoFStock password"
+        title={isConfirmMode ? t("resetPassword.pageTitleConfirm") : t("resetPassword.pageTitleRequest")}
+        description={t("resetPassword.pageDescription")}
       />
       <div className="flex flex-col flex-1 w-full max-w-md mx-auto justify-center lg:w-1/2">
+        <div className="flex justify-end mb-4">
+          <LanguageSwitcher />
+        </div>
         {isConfirmMode ? (
           <ConfirmResetForm uid={uid} token={token} />
         ) : (
@@ -225,7 +236,7 @@ export default function ResetPassword() {
 
         <p className="mt-5 text-sm text-gray-500 dark:text-gray-400">
           <Link to="/signin" className="text-brand-500 hover:text-brand-600 dark:text-brand-400">
-            Back to sign in
+            {t("common.backToSignIn")}
           </Link>
         </p>
       </div>

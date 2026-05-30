@@ -1,14 +1,14 @@
 import PageMeta from "../../components/common/PageMeta";
 import AuthLayout from "./AuthPageLayout";
 import SignInForm from "../../components/auth/SignInForm";
+import { useTranslation } from "../../i18n/I18nContext";
 
 export default function SignIn() {
+  const { t } = useTranslation();
+
   return (
     <>
-      <PageMeta
-        title="React.js SignIn Dashboard | TailAdmin - Next.js Admin Dashboard Template"
-        description="This is React.js SignIn Tables Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
-      />
+      <PageMeta title={t("signIn.pageTitle")} description={t("signIn.pageDescription")} />
       <AuthLayout>
         <SignInForm />
       </AuthLayout>

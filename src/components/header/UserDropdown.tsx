@@ -3,15 +3,11 @@ import { useNavigate } from "react-router";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { useAuth } from "../../auth/AuthContext";
-
-function roleLabel(role: string): string {
-  if (role === "MERCHANT") return "Merchant";
-  if (role === "CASHIER") return "Cashier";
-  if (role === "ADMIN") return "Admin";
-  return role;
-}
+import { useTranslation } from "../../i18n/I18nContext";
+import type { UserRole } from "../../api/types";
 
 export default function UserDropdown() {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -30,9 +26,10 @@ export default function UserDropdown() {
     navigate("/signin", { replace: true });
   }
 
-  const displayName = user?.full_name ?? "User";
+  const displayName = user?.full_name ?? t("userMenu.defaultUser");
   const displayEmail = user?.email ?? "";
-  const subtitle = user ? roleLabel(user.role) : "";
+  const roleKey = user?.role ? `roles.${user.role as UserRole}` : null;
+  const subtitle = roleKey ? t(roleKey) : "";
 
   return (
     <div className="relative">
@@ -92,7 +89,7 @@ export default function UserDropdown() {
               to="/profile"
               className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
-              Edit profile
+              {t("userMenu.editProfile")}
             </DropdownItem>
           </li>
         </ul>
@@ -101,7 +98,7 @@ export default function UserDropdown() {
           onClick={handleSignOut}
           className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300 w-full text-left"
         >
-          Sign out
+          {t("userMenu.signOut")}
         </button>
       </Dropdown>
     </div>

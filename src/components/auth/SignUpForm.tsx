@@ -2,14 +2,17 @@ import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ApiError, getFieldError } from "../../api/errors";
 import { useAuth } from "../../auth/AuthContext";
+import { useTranslation } from "../../i18n/I18nContext";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
 import Alert from "../ui/alert/Alert";
+import LanguageSwitcher from "../common/LanguageSwitcher";
 
 export default function SignUpForm() {
+  const { t } = useTranslation();
   const { registerMerchant } = useAuth();
   const navigate = useNavigate();
 
@@ -31,7 +34,7 @@ export default function SignUpForm() {
     setFieldErrors({});
 
     if (!acceptedTerms) {
-      setError("Please accept the terms to create an account.");
+      setError(t("signUp.errorTerms"));
       return;
     }
 
@@ -58,7 +61,7 @@ export default function SignUpForm() {
         }
         setFieldErrors(next);
       } else {
-        setError("Unable to register. Please try again.");
+        setError(t("signUp.errorGeneric"));
       }
     } finally {
       setIsSubmitting(false);
@@ -67,29 +70,28 @@ export default function SignUpForm() {
 
   return (
     <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar">
-      <div className="w-full max-w-md mx-auto mb-5 sm:pt-10">
+      <div className="flex items-center justify-between w-full max-w-md mx-auto mb-5 sm:pt-10">
         <Link
           to="/signin"
           className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         >
           <ChevronLeftIcon className="size-5" />
-          Back to sign in
+          {t("common.backToSignIn")}
         </Link>
+        <LanguageSwitcher />
       </div>
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
             <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-              Register merchant
+              {t("signUp.title")}
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Create your TwoFStock merchant account and start your trial.
-            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{t("signUp.subtitle")}</p>
           </div>
 
           {error && (
             <div className="mb-5">
-              <Alert variant="error" title="Registration failed" message={error} />
+              <Alert variant="error" title={t("signUp.errorTitle")} message={error} />
             </div>
           )}
 
@@ -97,12 +99,13 @@ export default function SignUpForm() {
             <div className="space-y-5">
               <div>
                 <Label>
-                  Full name<span className="text-error-500">*</span>
+                  {t("signUp.fullName")}
+                  <span className="text-error-500">{t("common.required")}</span>
                 </Label>
                 <Input
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Your name"
+                  placeholder={t("signUp.fullNamePlaceholder")}
                   disabled={isSubmitting}
                   error={Boolean(fieldErrors.full_name)}
                   hint={fieldErrors.full_name}
@@ -111,12 +114,13 @@ export default function SignUpForm() {
               </div>
               <div>
                 <Label>
-                  Business name<span className="text-error-500">*</span>
+                  {t("signUp.businessName")}
+                  <span className="text-error-500">{t("common.required")}</span>
                 </Label>
                 <Input
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
-                  placeholder="Your shop or company"
+                  placeholder={t("signUp.businessNamePlaceholder")}
                   disabled={isSubmitting}
                   error={Boolean(fieldErrors.business_name)}
                   hint={fieldErrors.business_name}
@@ -125,13 +129,14 @@ export default function SignUpForm() {
               </div>
               <div>
                 <Label>
-                  Email<span className="text-error-500">*</span>
+                  {t("common.email")}
+                  <span className="text-error-500">{t("common.required")}</span>
                 </Label>
                 <Input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@business.com"
+                  placeholder={t("signIn.emailPlaceholder")}
                   disabled={isSubmitting}
                   error={Boolean(fieldErrors.email)}
                   hint={fieldErrors.email}
@@ -139,11 +144,11 @@ export default function SignUpForm() {
                 />
               </div>
               <div>
-                <Label>Phone number</Label>
+                <Label>{t("signUp.phoneNumber")}</Label>
                 <Input
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  placeholder="Optional"
+                  placeholder={t("common.optional")}
                   disabled={isSubmitting}
                   error={Boolean(fieldErrors.phone_number)}
                   hint={fieldErrors.phone_number}
@@ -151,14 +156,15 @@ export default function SignUpForm() {
               </div>
               <div>
                 <Label>
-                  Password<span className="text-error-500">*</span>
+                  {t("common.password")}
+                  <span className="text-error-500">{t("common.required")}</span>
                 </Label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="At least 8 characters"
+                    placeholder={t("signUp.passwordPlaceholder")}
                     disabled={isSubmitting}
                     error={Boolean(fieldErrors.password)}
                     hint={fieldErrors.password}
@@ -179,13 +185,14 @@ export default function SignUpForm() {
               </div>
               <div>
                 <Label>
-                  Confirm password<span className="text-error-500">*</span>
+                  {t("signUp.confirmPassword")}
+                  <span className="text-error-500">{t("common.required")}</span>
                 </Label>
                 <Input
                   type={showPassword ? "text" : "password"}
                   value={passwordConfirm}
                   onChange={(e) => setPasswordConfirm(e.target.value)}
-                  placeholder="Repeat password"
+                  placeholder={t("signUp.confirmPasswordPlaceholder")}
                   disabled={isSubmitting}
                   error={Boolean(fieldErrors.password_confirm)}
                   hint={fieldErrors.password_confirm}
@@ -200,12 +207,12 @@ export default function SignUpForm() {
                   onChange={setAcceptedTerms}
                 />
                 <p className="inline-block font-normal text-gray-500 dark:text-gray-400">
-                  I agree to the terms of service and privacy policy.
+                  {t("signUp.terms")}
                 </p>
               </div>
               <div>
                 <Button className="w-full" size="sm" type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Creating account…" : "Create merchant account"}
+                  {isSubmitting ? t("signUp.submitting") : t("signUp.submit")}
                 </Button>
               </div>
             </div>
@@ -213,12 +220,12 @@ export default function SignUpForm() {
 
           <div className="mt-5">
             <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-              Already have an account?{" "}
+              {t("signUp.hasAccount")}{" "}
               <Link
                 to="/signin"
                 className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
               >
-                Sign In
+                {t("signUp.signInLink")}
               </Link>
             </p>
           </div>

@@ -92,6 +92,16 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 - **Vite proxy** — `/api/v1` → `http://127.0.0.1:8001` in `vite.config.ts`.
 - **Auth UI** — `SignInForm` → `POST /auth/token/`; `SignUpForm` → `POST /auth/register/merchant/`; `ResetPassword` → `POST /auth/password/reset/request/`.
 - **Email OTP** — after register/sign-in (if unverified): `/verify-email` auto-sends code via `POST /auth/otp/request/`, verifies with `POST /auth/otp/verify/`; `EmailVerifiedRoute` blocks dashboard until `email_verified_at` is set.
+
+### Internationalization (i18n)
+
+**Status: implemented** for implemented pages (English + French).
+
+- **`src/i18n/`** — `I18nProvider`, `useTranslation()`, locale files `locales/en.ts` and `locales/fr.ts`.
+- **Persistence:** `localStorage` key `twofstock_locale`; default from browser (`fr*` → French, else English).
+- **`LanguageSwitcher`** — EN / FR toggle on auth forms, verify/reset pages, and app header.
+- **Translated:** sign-in, sign-up, verify email, reset password (request + confirm), auth layout tagline, loading states, dashboard meta, user menu, role labels.
+- **API error messages** from the backend remain in English until a server-side i18n layer exists; UI chrome and fallbacks are translated.
 - **Routes** — protected `AppLayout` routes; guest `/signin`, `/signup`, `/reset-password`.
 - **Header** — `UserDropdown` shows user + sign out (`POST /auth/logout/`).
 - **Production note:** configure Django **CORS** when the SPA is served from a different origin than the API.
@@ -275,7 +285,7 @@ Backend phases **0–6 are implemented**; frontend phases can proceed in order w
 - Offline POS / sync queues.
 - Payment processor checkout (subscription billing UI only displays API state).
 - Real-time websockets for stock (polling or manual refresh is enough for v1).
-- i18n / multi-language (English first).
+- Backend API message localization (DRF responses stay English).
 
 ---
 

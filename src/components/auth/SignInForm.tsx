@@ -3,13 +3,16 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { ApiError } from "../../api/errors";
 import { useAuth } from "../../auth/AuthContext";
 import { isEmailVerified } from "../../auth/emailVerification";
+import { useTranslation } from "../../i18n/I18nContext";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Button from "../ui/button/Button";
 import Alert from "../ui/alert/Alert";
+import LanguageSwitcher from "../common/LanguageSwitcher";
 
 export default function SignInForm() {
+  const { t } = useTranslation();
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +35,7 @@ export default function SignInForm() {
       if (err instanceof ApiError) {
         setError(err.message);
       } else {
-        setError("Unable to sign in. Please try again.");
+        setError(t("signIn.errorGeneric"));
       }
     } finally {
       setIsSubmitting(false);
@@ -41,29 +44,28 @@ export default function SignInForm() {
 
   return (
     <div className="flex flex-col flex-1">
-      <div className="w-full max-w-md pt-10 mx-auto">
+      <div className="flex items-center justify-between w-full max-w-md pt-10 mx-auto">
         <Link
           to="/"
           className="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
         >
           <ChevronLeftIcon className="size-5" />
-          Back to dashboard
+          {t("common.backToDashboard")}
         </Link>
+        <LanguageSwitcher />
       </div>
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
             <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-              Sign In
+              {t("signIn.title")}
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Sign in with your TwoFStock account email and password.
-            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{t("signIn.subtitle")}</p>
           </div>
 
           {error && (
             <div className="mb-5">
-              <Alert variant="error" title="Sign in failed" message={error} />
+              <Alert variant="error" title={t("signIn.errorTitle")} message={error} />
             </div>
           )}
 
@@ -71,12 +73,12 @@ export default function SignInForm() {
             <div className="space-y-6">
               <div>
                 <Label>
-                  Email <span className="text-error-500">*</span>
+                  {t("common.email")} <span className="text-error-500">{t("common.required")}</span>
                 </Label>
                 <Input
                   type="email"
                   autoComplete="email"
-                  placeholder="you@business.com"
+                  placeholder={t("signIn.emailPlaceholder")}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isSubmitting}
@@ -85,13 +87,14 @@ export default function SignInForm() {
               </div>
               <div>
                 <Label>
-                  Password <span className="text-error-500">*</span>
+                  {t("common.password")}{" "}
+                  <span className="text-error-500">{t("common.required")}</span>
                 </Label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
-                    placeholder="Enter your password"
+                    placeholder={t("signIn.passwordPlaceholder")}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isSubmitting}
@@ -114,12 +117,12 @@ export default function SignInForm() {
                   to="/reset-password"
                   className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
-                  Forgot password?
+                  {t("signIn.forgotPassword")}
                 </Link>
               </div>
               <div>
                 <Button className="w-full" size="sm" type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Signing in…" : "Sign in"}
+                  {isSubmitting ? t("signIn.submitting") : t("signIn.submit")}
                 </Button>
               </div>
             </div>
@@ -127,12 +130,12 @@ export default function SignInForm() {
 
           <div className="mt-5">
             <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-              Don&apos;t have an account?{" "}
+              {t("signIn.noAccount")}{" "}
               <Link
                 to="/signup"
                 className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
               >
-                Register as merchant
+                {t("signIn.registerLink")}
               </Link>
             </p>
           </div>
