@@ -17,11 +17,16 @@ export default function SignInForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const from = (location.state as { from?: string } | null)?.from ?? "/";
+  const passwordChangedDetail =
+    (location.state as { passwordChanged?: boolean; detail?: string } | null)?.passwordChanged === true
+      ? ((location.state as { detail?: string }).detail ?? null)
+      : null;
 
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const successMessage = passwordChangedDetail;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
@@ -62,6 +67,12 @@ export default function SignInForm() {
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">{t("signIn.subtitle")}</p>
           </div>
+
+          {successMessage && (
+            <div className="mb-5">
+              <Alert variant="success" title={t("signIn.passwordChangedTitle")} message={successMessage} />
+            </div>
+          )}
 
           {error && (
             <div className="mb-5">

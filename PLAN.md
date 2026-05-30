@@ -110,7 +110,7 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 
 ## Phase F1 — Identity & profile
 
-**Status: not started** (maps to backend Phase 1 + 1b)
+**Status: implemented**
 
 | Screen / flow | API |
 |---------------|-----|
@@ -123,8 +123,9 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 | Reset password page | `/reset-password?uid=&token=` → `POST /auth/password/reset/confirm/` (align with `PASSWORD_RESET_LINK_BASE`) |
 | Email verify (optional) | `POST /auth/otp/request/`, `POST /auth/otp/verify/` |
 
-- Reuse **`UserProfiles`** page pattern for profile; split forms by role.
-- Header **UserDropdown:** name, role, logout.
+- **`/profile`** — overview card (name, email, role, verification status), role-aware edit form (`features/profile/`), change-password form (signs out on success).
+- **Header `UserDropdown`:** name, role, profile link, logout.
+- **Sign-in:** shows success banner after password change redirect.
 
 ---
 
@@ -307,7 +308,7 @@ Run backend on **8001** (or proxy target). Open Swagger at `http://127.0.0.1:800
 | Phase | Description | Status |
 |-------|-------------|--------|
 | F0 | API client, auth, env, proxy | **Implemented** |
-| F1 | Login, register, profile, passwords, OTP | Not started |
+| F1 | Login, register, profile, passwords, OTP | **Implemented** |
 | F2 | Shops, locations, categories, products | Not started |
 | F3 | Stock & alerts | Not started |
 | F4 | Sales / POS | Not started |
