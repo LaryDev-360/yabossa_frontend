@@ -7,8 +7,8 @@ import type {
   User,
 } from "./types";
 
-export async function login(payload: LoginPayload): Promise<AuthTokensResponse> {
-  return publicRequest<AuthTokensResponse>("/auth/token/", {
+export async function login(payload: LoginPayload): Promise<TokenPair> {
+  return publicRequest<TokenPair>("/auth/token/", {
     method: "POST",
     body: payload,
   });

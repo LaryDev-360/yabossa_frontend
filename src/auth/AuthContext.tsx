@@ -90,9 +90,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     const data = await authApi.login({ email, password });
-    const nextUser = applySession(data.access, data.refresh, data.user);
-    setUser(nextUser);
-    return nextUser;
+    tokenStorage.setTokens(data.access, data.refresh);
+    const me = await authApi.fetchMe();
+    setUser(me);
+    return me;
   }, []);
 
   const registerMerchant = useCallback(
@@ -136,7 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
-      isAuthenticated: user !== null,
+      isAuthenticated: Boolean(user),
       isLoading,
       login,
       registerMerchant,

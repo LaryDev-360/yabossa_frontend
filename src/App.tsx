@@ -17,6 +17,10 @@ const NotFound = lazy(() => import("./pages/OtherPage/NotFound"));
 const AppLayout = lazy(() => import("./layout/AppLayout"));
 const Home = lazy(() => import("./pages/Dashboard/Home"));
 const UserProfiles = lazy(() => import("./pages/UserProfiles"));
+const ShopsPage = lazy(() => import("./pages/Shops/ShopsPage"));
+const ShopLocationsPage = lazy(() => import("./pages/Shops/ShopLocationsPage"));
+const CategoriesPage = lazy(() => import("./pages/Catalog/CategoriesPage"));
+const ProductsPage = lazy(() => import("./pages/Catalog/ProductsPage"));
 const Videos = lazy(() => import("./pages/UiElements/Videos"));
 const Images = lazy(() => import("./pages/UiElements/Images"));
 const Alerts = lazy(() => import("./pages/UiElements/Alerts"));
@@ -51,6 +55,10 @@ export default function App() {
                 <Route element={<AppLayout />}>
                   <Route index path="/" element={<Home />} />
                   <Route path="/profile" element={<UserProfiles />} />
+                  <Route path="/shops" element={<ShopsPage />} />
+                  <Route path="/shops/:shopId/locations" element={<ShopLocationsPage />} />
+                  <Route path="/categories" element={<CategoriesPage />} />
+                  <Route path="/products" element={<ProductsPage />} />
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/blank" element={<Blank />} />
                   <Route path="/form-elements" element={<FormElements />} />

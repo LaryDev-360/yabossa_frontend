@@ -131,7 +131,7 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 
 ## Phase F2 — Shops & catalog
 
-**Status: not started** (backend Phase 2)
+**Status: implemented**
 
 | Screen | API |
 |--------|-----|
@@ -140,9 +140,10 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 | Categories | `/categories/` |
 | Products | `/products/` (archive via `is_archived`) |
 
-- Tables: reuse `BasicTableOne` / `ui/table`; forms: `InputField`, `Select`, `TextArea`.
-- **Cashier:** read-only tables, no create buttons.
-- **Shop delete:** handle **409** when locations exist.
+- **`/shops`**, **`/shops/:shopId/locations`**, **`/categories`**, **`/products`** — list + modal forms; cashiers read-only (no create/edit/delete).
+- Shop delete surfaces **409** when locations exist.
+- Products use archive/restore (`PATCH is_archived`) instead of hard delete.
+- Sidebar nav updated; demo TailAdmin gallery removed from sidebar.
 
 ---
 
@@ -309,7 +310,7 @@ Run backend on **8001** (or proxy target). Open Swagger at `http://127.0.0.1:800
 |-------|-------------|--------|
 | F0 | API client, auth, env, proxy | **Implemented** |
 | F1 | Login, register, profile, passwords, OTP | **Implemented** |
-| F2 | Shops, locations, categories, products | Not started |
+| F2 | Shops, locations, categories, products | **Implemented** |
 | F3 | Stock & alerts | Not started |
 | F4 | Sales / POS | Not started |
 | F5 | Subscription UI & gates | Not started |
