@@ -213,6 +213,16 @@ const en = {
     formErrorTitle: "Save failed",
     formErrorGeneric: "Unable to save location.",
   },
+  places: {
+    searchPlaceholder: "Search for an address…",
+    addressPlaceholder: "Street address",
+    cityPlaceholder: "City",
+    searching: "Searching…",
+    noResults: "No addresses found. Try manual entry.",
+    searchError: "Address search failed. Try again or enter manually.",
+    enterManually: "Enter manually",
+    useSearch: "Search addresses",
+  },
   categories: {
     title: "Categories",
     subtitle: "Group products for easier browsing and reporting.",

@@ -128,6 +128,9 @@ export default function ShopLocationsPage() {
                 <TableRow>
                   <TableCell isHeader>{t("locations.name")}</TableCell>
                   <TableCell isHeader className={tableCol.muted}>
+                    {t("locations.address")}
+                  </TableCell>
+                  <TableCell isHeader className={tableCol.muted}>
                     {t("locations.city")}
                   </TableCell>
                   <TableCell isHeader className={tableCol.muted}>
@@ -150,6 +153,9 @@ export default function ShopLocationsPage() {
                 {locations.map((location) => (
                   <TableRow key={location.id}>
                     <TableCell className={tableCol.primary}>{location.name}</TableCell>
+                    <TableCell className={tableCol.muted}>
+                      {location.formatted_address || location.address || "—"}
+                    </TableCell>
                     <TableCell className={tableCol.muted}>{location.city || "—"}</TableCell>
                     <TableCell className={tableCol.muted}>{location.phone_number || "—"}</TableCell>
                     <TableCell className={tableCol.status}>

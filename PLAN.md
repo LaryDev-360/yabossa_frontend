@@ -144,6 +144,7 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 - Shop delete surfaces **409** when locations exist.
 - Products use archive/restore (`PATCH is_archived`) instead of hard delete.
 - Sidebar nav updated; demo TailAdmin gallery removed from sidebar.
+- **Address autocomplete (Nominatim):** `GET /places/autocomplete/` proxied via backend; location form uses search with manual fallback; structured fields (`formatted_address`, `place_id`, lat/lng). Configure `PLACES_DEFAULT_COUNTRY` (default `BJ`). Swap `PLACES_PROVIDER` in production (Google/Mapbox).
 
 ---
 

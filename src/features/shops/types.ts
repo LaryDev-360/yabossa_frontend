@@ -12,6 +12,12 @@ export interface Location {
   name: string;
   address: string | null;
   city: string | null;
+  formatted_address: string | null;
+  country_code: string;
+  latitude: string | null;
+  longitude: string | null;
+  place_id: string;
+  place_provider: string;
   phone_number: string | null;
   is_active: boolean;
   created_at: string;
@@ -28,6 +34,12 @@ export type LocationPayload = {
   name: string;
   address?: string;
   city?: string;
+  formatted_address?: string;
+  country_code?: string;
+  latitude?: string | null;
+  longitude?: string | null;
+  place_id?: string;
+  place_provider?: string;
   phone_number?: string;
   is_active?: boolean;
 };

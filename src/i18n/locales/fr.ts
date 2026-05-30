@@ -218,6 +218,16 @@ const fr: Record<keyof typeof en, Record<string, string>> = {
     formErrorTitle: "Échec de l'enregistrement",
     formErrorGeneric: "Impossible d'enregistrer l'emplacement.",
   },
+  places: {
+    searchPlaceholder: "Rechercher une adresse…",
+    addressPlaceholder: "Adresse",
+    cityPlaceholder: "Ville",
+    searching: "Recherche…",
+    noResults: "Aucune adresse trouvée. Saisissez-la manuellement.",
+    searchError: "Échec de la recherche d'adresse. Réessayez ou saisissez manuellement.",
+    enterManually: "Saisir manuellement",
+    useSearch: "Rechercher une adresse",
+  },
   categories: {
     title: "Catégories",
     subtitle: "Regroupez les produits pour faciliter la navigation et les rapports.",

@@ -1,11 +1,12 @@
 import { FormEvent, useEffect, useState } from "react";
 import { ApiError, getFieldError } from "../../../api/errors";
 import { useTranslation } from "../../../i18n/I18nContext";
+import AddressAutocomplete from "../../places/components/AddressAutocomplete";
+import type { PlaceSuggestion } from "../../places/types";
 import { createLocation, updateLocation } from "../api";
 import type { Location } from "../types";
 import Label from "../../../components/form/Label";
 import Input from "../../../components/form/input/InputField";
-import TextArea from "../../../components/form/input/TextArea";
 import Button from "../../../components/ui/button/Button";
 import Alert from "../../../components/ui/alert/Alert";
 import { Modal } from "../../../components/ui/modal";
@@ -31,6 +32,12 @@ export default function LocationFormModal({
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
+  const [formattedAddress, setFormattedAddress] = useState("");
+  const [countryCode, setCountryCode] = useState("");
+  const [latitude, setLatitude] = useState<string | null>(null);
+  const [longitude, setLongitude] = useState<string | null>(null);
+  const [placeId, setPlaceId] = useState("");
+  const [placeProvider, setPlaceProvider] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,11 +51,43 @@ export default function LocationFormModal({
     setName(location?.name ?? "");
     setAddress(location?.address ?? "");
     setCity(location?.city ?? "");
+    setFormattedAddress(location?.formatted_address ?? "");
+    setCountryCode(location?.country_code ?? "");
+    setLatitude(location?.latitude ?? null);
+    setLongitude(location?.longitude ?? null);
+    setPlaceId(location?.place_id ?? "");
+    setPlaceProvider(location?.place_provider ?? "");
     setPhoneNumber(location?.phone_number ?? "");
     setIsActive(location?.is_active ?? true);
     setError(null);
     setFieldErrors({});
   }, [isOpen, location]);
+
+  function clearGeocodeFields() {
+    setFormattedAddress("");
+    setCountryCode("");
+    setLatitude(null);
+    setLongitude(null);
+    setPlaceId("");
+    setPlaceProvider("");
+  }
+
+  function handlePlaceSelect(suggestion: PlaceSuggestion) {
+    setAddress(suggestion.address_line ?? suggestion.formatted_address);
+    setCity(suggestion.city ?? "");
+    setFormattedAddress(suggestion.formatted_address);
+    setCountryCode(suggestion.country_code ?? "");
+    setLatitude(suggestion.latitude);
+    setLongitude(suggestion.longitude);
+    setPlaceId(suggestion.place_id);
+    setPlaceProvider("nominatim");
+  }
+
+  function handleManualModeChange(manual: boolean) {
+    if (manual) {
+      clearGeocodeFields();
+    }
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -60,6 +99,12 @@ export default function LocationFormModal({
       name: name.trim(),
       address: address.trim() || undefined,
       city: city.trim() || undefined,
+      formatted_address: formattedAddress.trim() || undefined,
+      country_code: countryCode.trim() || undefined,
+      latitude: latitude || undefined,
+      longitude: longitude || undefined,
+      place_id: placeId.trim() || undefined,
+      place_provider: placeProvider.trim() || undefined,
       phone_number: phoneNumber.trim() || undefined,
       is_active: isActive,
     };
@@ -120,15 +165,16 @@ export default function LocationFormModal({
             />
           </div>
 
-          <div>
-            <Label>{t("locations.address")}</Label>
-            <TextArea value={address} onChange={setAddress} disabled={isSubmitting} rows={2} />
-          </div>
-
-          <div>
-            <Label>{t("locations.city")}</Label>
-            <Input value={city} onChange={(e) => setCity(e.target.value)} disabled={isSubmitting} />
-          </div>
+          <AddressAutocomplete
+            address={address}
+            city={city}
+            formattedAddress={formattedAddress}
+            disabled={isSubmitting}
+            onAddressChange={setAddress}
+            onCityChange={setCity}
+            onSelect={handlePlaceSelect}
+            onManualModeChange={handleManualModeChange}
+          />
 
           <div>
             <Label>{t("locations.phone")}</Label>
