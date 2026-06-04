@@ -188,7 +188,7 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 
 ## Phase F5 — Subscription
 
-**Status: not started** (backend Phase 5)
+**Status: implemented** (backend Phase 5)
 
 | Screen | API |
 |--------|-----|
@@ -197,6 +197,9 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 
 - Global **subscription banner** when `is_operational === false` on gated actions.
 - Merchant: read-only except contact/support CTA (no self-serve payment in v1 unless added later).
+- **`/subscription`** — merchant billing status from `GET /subscriptions/me/`.
+- **`/admin/subscriptions`** — admin list + PATCH modal (status, dates, price).
+- **Global banner** in `AppLayout` when `is_operational === false` (merchant) or after **403** subscription error (cashier/merchant).
 
 ---
 
@@ -321,7 +324,7 @@ Run backend on **8001** (or proxy target). Open Swagger at `http://127.0.0.1:800
 | F2 | Shops, locations, categories, products | **Implemented** |
 | F3 | Stock & alerts | **Implemented** |
 | F4 | Sales / POS | **Implemented** |
-| F5 | Subscription UI & gates | Not started |
+| F5 | Subscription UI & gates | **Implemented** |
 | F6 | Dashboard wired to `/dashboard/summary/` | Not started |
 | F7 | Production build & deploy | Not started |
 

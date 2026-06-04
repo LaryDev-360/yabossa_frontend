@@ -1,5 +1,6 @@
 import { getApiBaseUrl } from "./config";
 import { ApiError, parseApiError } from "./errors";
+import { notifySubscriptionBlocked } from "../features/subscriptions/subscriptionNotify";
 import { tokenStorage } from "../auth/tokenStorage";
 import type { TokenPair } from "./types";
 
@@ -109,7 +110,9 @@ export async function apiRequest<T>(
   const payload = await parseJsonSafe(res);
 
   if (!res.ok) {
-    throw parseApiError(res.status, payload);
+    const err = parseApiError(res.status, payload);
+    notifySubscriptionBlocked(err);
+    throw err;
   }
 
   return payload as T;

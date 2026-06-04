@@ -26,6 +26,10 @@ const StockAlertsPage = lazy(() => import("./pages/Stock/StockAlertsPage"));
 const SalesListPage = lazy(() => import("./pages/Sales/SalesListPage"));
 const NewSalePage = lazy(() => import("./pages/Sales/NewSalePage"));
 const SaleDetailPage = lazy(() => import("./pages/Sales/SaleDetailPage"));
+const SubscriptionPage = lazy(() => import("./pages/Subscription/SubscriptionPage"));
+const AdminSubscriptionsPage = lazy(
+  () => import("./pages/Subscription/AdminSubscriptionsPage"),
+);
 const Videos = lazy(() => import("./pages/UiElements/Videos"));
 const Images = lazy(() => import("./pages/UiElements/Images"));
 const Alerts = lazy(() => import("./pages/UiElements/Alerts"));
@@ -72,6 +76,8 @@ export default function App() {
                   <Route path="/sales" element={<SalesListPage />} />
                   <Route path="/sales/new" element={<NewSalePage />} />
                   <Route path="/sales/:id" element={<SaleDetailPage />} />
+                  <Route path="/subscription" element={<SubscriptionPage />} />
+                  <Route path="/admin/subscriptions" element={<AdminSubscriptionsPage />} />
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/blank" element={<Blank />} />
                   <Route path="/form-elements" element={<FormElements />} />

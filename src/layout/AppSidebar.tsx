@@ -8,8 +8,10 @@ import {
   ListIcon,
   AlertHexaIcon,
   DollarLineIcon,
+  PlugInIcon,
   UserCircleIcon,
 } from "../icons";
+import { useAuth } from "../auth/AuthContext";
 import { useSidebar } from "../context/SidebarContext";
 import { useTranslation } from "../i18n/I18nContext";
 
@@ -21,6 +23,7 @@ type NavItem = {
 
 export default function AppSidebar() {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
 
@@ -31,6 +34,18 @@ export default function AppSidebar() {
     { icon: <ListIcon />, name: t("nav.products"), path: "/products" },
     { icon: <DollarLineIcon />, name: t("nav.sales"), path: "/sales" },
     { icon: <AlertHexaIcon />, name: t("nav.stockAlerts"), path: "/stock/alerts" },
+    ...(user?.role === "MERCHANT"
+      ? [{ icon: <PlugInIcon />, name: t("nav.subscription"), path: "/subscription" }]
+      : []),
+    ...(user?.role === "ADMIN"
+      ? [
+          {
+            icon: <PlugInIcon />,
+            name: t("nav.adminSubscriptions"),
+            path: "/admin/subscriptions",
+          },
+        ]
+      : []),
     { icon: <UserCircleIcon />, name: t("nav.profile"), path: "/profile" },
   ];
 
