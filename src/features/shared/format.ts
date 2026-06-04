@@ -16,3 +16,14 @@ export function formatDate(iso: string, locale: string): string {
     return iso;
   }
 }
+
+export function formatDateTime(iso: string, locale: string): string {
+  try {
+    return new Intl.DateTimeFormat(locale, {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+}

@@ -18,11 +18,13 @@ import { deleteCategory, listCategories } from "../../features/catalog/api";
 import CategoryFormModal from "../../features/catalog/components/CategoryFormModal";
 import type { Category } from "../../features/catalog/types";
 import { formatDate } from "../../features/shared/format";
+import { useConfirm } from "../../context/ConfirmContext";
 import { useTranslation } from "../../i18n/I18nContext";
 import { PencilIcon, PlusIcon, TrashBinIcon } from "../../icons";
 
 export default function CategoriesPage() {
   const { t, locale } = useTranslation();
+  const { confirm } = useConfirm();
   const { user } = useAuth();
   const canWrite = canManageCatalog(user?.role);
 
@@ -59,7 +61,11 @@ export default function CategoriesPage() {
   }
 
   async function handleDelete(category: Category) {
-    if (!window.confirm(t("categories.deleteConfirm", { name: category.name }))) {
+    const ok = await confirm({
+      message: t("categories.deleteConfirm", { name: category.name }),
+      variant: "danger",
+    });
+    if (!ok) {
       return;
     }
     try {

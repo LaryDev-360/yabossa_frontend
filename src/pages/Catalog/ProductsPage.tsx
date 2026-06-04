@@ -21,11 +21,13 @@ import type { Category, Product } from "../../features/catalog/types";
 import { formatMoney } from "../../features/shared/format";
 import { listShops } from "../../features/shops/api";
 import type { Shop } from "../../features/shops/types";
+import { useConfirm } from "../../context/ConfirmContext";
 import { useTranslation } from "../../i18n/I18nContext";
 import { PencilIcon, PlusIcon } from "../../icons";
 
 export default function ProductsPage() {
   const { t, locale } = useTranslation();
+  const { confirm } = useConfirm();
   const { user } = useAuth();
   const canWrite = canManageCatalog(user?.role);
 
@@ -88,7 +90,12 @@ export default function ProductsPage() {
   async function toggleArchive(product: Product) {
     const nextArchived = !product.is_archived;
     const confirmKey = nextArchived ? "products.archiveConfirm" : "products.unarchiveConfirm";
-    if (!window.confirm(t(confirmKey, { name: product.name }))) {
+    const ok = await confirm({
+      message: t(confirmKey, { name: product.name }),
+      variant: nextArchived ? "warning" : "default",
+      confirmLabel: nextArchived ? t("products.archive") : t("products.unarchive"),
+    });
+    if (!ok) {
       return;
     }
     try {

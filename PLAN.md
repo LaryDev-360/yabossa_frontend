@@ -140,7 +140,8 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 | Categories | `/categories/` |
 | Products | `/products/` (archive via `is_archived`) |
 
-- **`/shops`**, **`/shops/:shopId/locations`**, **`/categories`**, **`/products`** — list + modal forms; cashiers read-only (no create/edit/delete).
+- **`/shops`** — list + expand row to manage locations inline (`?shop=` deep link); **`/shops/:shopId/locations`** redirects to shops.
+- **`/categories`**, **`/products`** — list + modal forms; cashiers read-only (no create/edit/delete).
 - Shop delete surfaces **409** when locations exist.
 - Products use archive/restore (`PATCH is_archived`) instead of hard delete.
 - Sidebar nav updated; demo TailAdmin gallery removed from sidebar.
@@ -150,7 +151,7 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 
 ## Phase F3 — Stock
 
-**Status: not started** (backend Phase 3)
+**Status: implemented** (backend Phase 3)
 
 | Screen | API |
 |--------|-----|
@@ -160,12 +161,14 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 
 - Low-stock badges on stock table when `quantity <= low_stock_threshold`.
 - Link alerts to location + product detail.
+- **`/shops/:shopId/locations/:locationId/stock`** — stock lines CRUD (cashiers read-only); link from locations table.
+- **`/stock/alerts`** — open alerts list, resolve action, links to location stock; optional “show resolved” filter.
 
 ---
 
 ## Phase F4 — Sales (POS)
 
-**Status: not started** (backend Phase 4)
+**Status: implemented** (backend Phase 4)
 
 | Screen | API |
 |--------|-----|
@@ -176,6 +179,10 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 - **POS flow:** pick location → scan/search products → quantities → client-generated `reference` (UUID or POS receipt id).
 - Handle **400** (stock, archived product, unknown product) and **409** (duplicate reference).
 - **Admin:** optional merchant/cashier attribution fields on create.
+- **`/sales`** — list with reference, location, totals; link to detail.
+- **`/sales/new`** — POS: location picker, in-stock product search, cart, `crypto.randomUUID()` reference; admin sends `merchant` from shop.
+- **`/sales/:id`** — sale detail with line items.
+- Handles **400** (stock/archived) and **409** (duplicate reference) with user-facing messages.
 
 ---
 
@@ -312,8 +319,8 @@ Run backend on **8001** (or proxy target). Open Swagger at `http://127.0.0.1:800
 | F0 | API client, auth, env, proxy | **Implemented** |
 | F1 | Login, register, profile, passwords, OTP | **Implemented** |
 | F2 | Shops, locations, categories, products | **Implemented** |
-| F3 | Stock & alerts | Not started |
-| F4 | Sales / POS | Not started |
+| F3 | Stock & alerts | **Implemented** |
+| F4 | Sales / POS | **Implemented** |
 | F5 | Subscription UI & gates | Not started |
 | F6 | Dashboard wired to `/dashboard/summary/` | Not started |
 | F7 | Production build & deploy | Not started |

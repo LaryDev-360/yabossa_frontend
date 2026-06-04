@@ -21,6 +21,11 @@ const ShopsPage = lazy(() => import("./pages/Shops/ShopsPage"));
 const ShopLocationsPage = lazy(() => import("./pages/Shops/ShopLocationsPage"));
 const CategoriesPage = lazy(() => import("./pages/Catalog/CategoriesPage"));
 const ProductsPage = lazy(() => import("./pages/Catalog/ProductsPage"));
+const LocationStockPage = lazy(() => import("./pages/Stock/LocationStockPage"));
+const StockAlertsPage = lazy(() => import("./pages/Stock/StockAlertsPage"));
+const SalesListPage = lazy(() => import("./pages/Sales/SalesListPage"));
+const NewSalePage = lazy(() => import("./pages/Sales/NewSalePage"));
+const SaleDetailPage = lazy(() => import("./pages/Sales/SaleDetailPage"));
 const Videos = lazy(() => import("./pages/UiElements/Videos"));
 const Images = lazy(() => import("./pages/UiElements/Images"));
 const Alerts = lazy(() => import("./pages/UiElements/Alerts"));
@@ -59,6 +64,14 @@ export default function App() {
                   <Route path="/shops/:shopId/locations" element={<ShopLocationsPage />} />
                   <Route path="/categories" element={<CategoriesPage />} />
                   <Route path="/products" element={<ProductsPage />} />
+                  <Route
+                    path="/shops/:shopId/locations/:locationId/stock"
+                    element={<LocationStockPage />}
+                  />
+                  <Route path="/stock/alerts" element={<StockAlertsPage />} />
+                  <Route path="/sales" element={<SalesListPage />} />
+                  <Route path="/sales/new" element={<NewSalePage />} />
+                  <Route path="/sales/:id" element={<SaleDetailPage />} />
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/blank" element={<Blank />} />
                   <Route path="/form-elements" element={<FormElements />} />

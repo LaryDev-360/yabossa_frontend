@@ -6,6 +6,8 @@ import {
   GridIcon,
   HorizontaLDots,
   ListIcon,
+  AlertHexaIcon,
+  DollarLineIcon,
   UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
@@ -27,6 +29,8 @@ export default function AppSidebar() {
     { icon: <BoxIconLine />, name: t("nav.shops"), path: "/shops" },
     { icon: <FolderIcon />, name: t("nav.categories"), path: "/categories" },
     { icon: <ListIcon />, name: t("nav.products"), path: "/products" },
+    { icon: <DollarLineIcon />, name: t("nav.sales"), path: "/sales" },
+    { icon: <AlertHexaIcon />, name: t("nav.stockAlerts"), path: "/stock/alerts" },
     { icon: <UserCircleIcon />, name: t("nav.profile"), path: "/profile" },
   ];
 
