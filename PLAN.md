@@ -205,7 +205,7 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 
 ## Phase F6 — Dashboard
 
-**Status: not started** (backend Phase 6)
+**Status: implemented** (backend Phase 6)
 
 | Screen | API |
 |--------|-----|
@@ -217,6 +217,7 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
   - **Top products:** table or bar chart from `top_products`
 - Date range: flatpickr → `from` / `to` query params (defaults: last 30 days).
 - Optional shop filter for merchants with multiple shops.
+- **`/`** — KPI cards (sales, revenue, profit, low stock), top products bar chart + table, flatpickr date range (default last 30 days), optional shop filter.
 
 ---
 
@@ -325,7 +326,7 @@ Run backend on **8001** (or proxy target). Open Swagger at `http://127.0.0.1:800
 | F3 | Stock & alerts | **Implemented** |
 | F4 | Sales / POS | **Implemented** |
 | F5 | Subscription UI & gates | **Implemented** |
-| F6 | Dashboard wired to `/dashboard/summary/` | Not started |
+| F6 | Dashboard wired to `/dashboard/summary/` | **Implemented** |
 | F7 | Production build & deploy | Not started |
 
 Update this table as phases complete.
