@@ -122,7 +122,7 @@ export default function Home() {
               mode="range"
               label={t("dashboard.dateRange")}
               placeholder={t("dashboard.dateRangePlaceholder")}
-              defaultDate={[from, to]}
+              defaultDate={[new Date(from), new Date(to)]}
               onChange={handlePeriodChange}
             />
           </div>

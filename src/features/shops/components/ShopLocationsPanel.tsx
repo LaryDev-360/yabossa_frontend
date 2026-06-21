@@ -20,7 +20,6 @@ import type { UserRole } from "../../../api/types";
 import { deleteLocation, listLocations } from "../api";
 import LocationFormModal from "./LocationFormModal";
 import type { Location } from "../types";
-import { formatDate } from "../../shared/format";
 
 interface ShopLocationsPanelProps {
   shopId: string;
@@ -29,7 +28,7 @@ interface ShopLocationsPanelProps {
 }
 
 export default function ShopLocationsPanel({ shopId, shopName, role }: ShopLocationsPanelProps) {
-  const { t, locale } = useTranslation();
+  const { t } = useTranslation();
   const { confirm } = useConfirm();
   const canWrite = canManageCatalog(role);
 

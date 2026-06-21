@@ -161,7 +161,7 @@ export default function StockLineFormModal({
             </Label>
             <Input
               type="number"
-              min={0}
+              min="0"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               disabled={isSubmitting}
@@ -175,7 +175,7 @@ export default function StockLineFormModal({
             <Label>{t("stock.lowStockThreshold")}</Label>
             <Input
               type="number"
-              min={0}
+              min="0"
               value={threshold}
               onChange={(e) => setThreshold(e.target.value)}
               disabled={isSubmitting}

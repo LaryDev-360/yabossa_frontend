@@ -1,6 +1,8 @@
 import type en from "./en";
 
-const fr: Record<keyof typeof en, Record<string, string>> = {
+type TranslationSection = { [key: string]: string | TranslationSection };
+
+const fr: { [K in keyof typeof en]: TranslationSection } = {
   common: {
     loading: "Chargement…",
     email: "E-mail",

@@ -27,7 +27,7 @@ interface TableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
 
 // Props for TableCell
 interface TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement> {
-  children: ReactNode;
+  children?: ReactNode;
   isHeader?: boolean;
   className?: string;
 }

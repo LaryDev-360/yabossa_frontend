@@ -10,7 +10,7 @@ export const SUPPORTED_LOCALES: { code: Locale; labelKey: "common.english" | "co
 
 export const translations: Record<Locale, typeof en> = {
   en,
-  fr: fr as typeof en,
+  fr: fr as unknown as typeof en,
 };
 
 export type TranslationKey = string;
