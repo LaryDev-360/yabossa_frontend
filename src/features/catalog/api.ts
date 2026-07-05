@@ -34,6 +34,10 @@ export async function listProducts(): Promise<Product[]> {
   return apiRequest<Product[]>("/products/");
 }
 
+export async function getProduct(id: string): Promise<Product> {
+  return apiRequest<Product>(`/products/${id}/`);
+}
+
 export async function createProduct(payload: ProductPayload): Promise<Product> {
   return apiRequest<Product>("/products/", { method: "POST", body: payload });
 }
@@ -52,6 +56,10 @@ export async function uploadProductImage(productId: string, file: File): Promise
     method: "POST",
     body: form,
   });
+}
+
+export async function listReferenceImages(productId: string): Promise<ProductImageRecord[]> {
+  return apiRequest<ProductImageRecord[]>(`/products/${productId}/reference-images/`);
 }
 
 export async function uploadReferenceImage(

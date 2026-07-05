@@ -160,182 +160,192 @@ export default function ProductFormModal({
     "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} className="max-w-lg m-4">
-      <div className="p-6 lg:p-8">
-        <h3 className="mb-6 text-xl font-semibold text-gray-800 dark:text-white/90">
-          {isEdit ? t("products.editProduct") : t("products.addProduct")}
-        </h3>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      className="max-w-lg m-4 max-h-[calc(100vh-2rem)] overflow-hidden"
+    >
+      <div className="flex max-h-[calc(100vh-2rem)] flex-col">
+        <div className="shrink-0 px-6 pt-6 lg:px-8 lg:pt-8">
+          <h3 className="pr-10 text-xl font-semibold text-gray-800 dark:text-white/90">
+            {isEdit ? t("products.editProduct") : t("products.addProduct")}
+          </h3>
 
-        {error && (
-          <div className="mb-5">
-            <Alert variant="error" title={t("products.formErrorTitle")} message={error} />
-          </div>
-        )}
+          {error && (
+            <div className="mt-4">
+              <Alert variant="error" title={t("products.formErrorTitle")} message={error} />
+            </div>
+          )}
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <Label>
-              {t("products.shop")} <span className="text-error-500">{t("common.required")}</span>
-            </Label>
-            <select
-              className={selectClass}
-              value={shopId}
-              onChange={(e) => setShopId(e.target.value)}
-              disabled={isSubmitting || isEdit}
-              required
-            >
-              {shops.map((shop) => (
-                <option key={shop.id} value={shop.id}>
-                  {shop.name}
-                </option>
-              ))}
-            </select>
-            {fieldErrors.shop && (
-              <p className="mt-1.5 text-xs text-error-500">{fieldErrors.shop}</p>
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <div className="max-h-[calc(100vh-11rem)] space-y-5 overflow-y-auto px-6 py-4 lg:px-8">
+            <div>
+              <Label>
+                {t("products.shop")} <span className="text-error-500">{t("common.required")}</span>
+              </Label>
+              <select
+                className={selectClass}
+                value={shopId}
+                onChange={(e) => setShopId(e.target.value)}
+                disabled={isSubmitting || isEdit}
+                required
+              >
+                {shops.map((shop) => (
+                  <option key={shop.id} value={shop.id}>
+                    {shop.name}
+                  </option>
+                ))}
+              </select>
+              {fieldErrors.shop && (
+                <p className="mt-1.5 text-xs text-error-500">{fieldErrors.shop}</p>
+              )}
+            </div>
+
+            <div>
+              <Label>{t("products.category")}</Label>
+              <select
+                className={selectClass}
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                disabled={isSubmitting}
+              >
+                <option value="">{t("products.noCategory")}</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <Label>
+                {t("products.name")}{" "}
+                <span className="text-error-500">{t("common.required")}</span>
+              </Label>
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={isSubmitting}
+                error={Boolean(fieldErrors.name)}
+                hint={fieldErrors.name}
+                required
+              />
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <Label>{t("products.purchasePrice")}</Label>
+                <Input
+                  type="number"
+                  step={0.01}
+                  min="0"
+                  value={purchasePrice}
+                  onChange={(e) => setPurchasePrice(e.target.value)}
+                  disabled={isSubmitting}
+                  error={Boolean(fieldErrors.purchase_price)}
+                  hint={fieldErrors.purchase_price}
+                />
+              </div>
+
+              <div>
+                <Label>
+                  {t("products.salePrice")}{" "}
+                  <span className="text-error-500">{t("common.required")}</span>
+                </Label>
+                <Input
+                  type="number"
+                  step={0.01}
+                  min="0"
+                  value={salePrice}
+                  onChange={(e) => setSalePrice(e.target.value)}
+                  disabled={isSubmitting}
+                  error={Boolean(fieldErrors.sale_price)}
+                  hint={fieldErrors.sale_price}
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label>{t("products.image")}</Label>
+              <div className="mt-2 flex items-center gap-4">
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt=""
+                    className="size-16 rounded-lg object-cover border border-gray-200 dark:border-gray-700"
+                  />
+                ) : (
+                  <div className="size-16 rounded-lg bg-gray-100 dark:bg-gray-800" />
+                )}
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  disabled={isSubmitting}
+                  onClick={() => imageInputRef.current?.click()}
+                >
+                  {t("products.uploadImage")}
+                </Button>
+                <input
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className="hidden"
+                  onChange={(e) => handleImageSelect(e.target.files?.[0] ?? null)}
+                />
+              </div>
+            </div>
+
+            {isEdit && product && (
+              <>
+                <div className="flex flex-wrap items-end gap-4">
+                  <div className="min-w-[10rem] flex-1">
+                    <Label>{t("products.scanCode")}</Label>
+                    <Input value={product.scan_code} disabled />
+                  </div>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    disabled={isPrintingQr}
+                    onClick={() => void handlePrintQr()}
+                  >
+                    {isPrintingQr ? t("common.loading") : t("products.printQr")}
+                  </Button>
+                </div>
+                <div>
+                  <Label>{t("products.referencePhotos")}</Label>
+                  <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">
+                    {t("products.referencePhotosHint", { count: referenceCount })}
+                  </p>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    disabled={isUploadingReference || isSubmitting}
+                    onClick={() => referenceInputRef.current?.click()}
+                  >
+                    {isUploadingReference
+                      ? t("products.uploadingReference")
+                      : t("products.addReferencePhoto")}
+                  </Button>
+                  <input
+                    ref={referenceInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => void handleReferenceSelect(e.target.files)}
+                  />
+                </div>
+              </>
             )}
           </div>
 
-          <div>
-            <Label>{t("products.category")}</Label>
-            <select
-              className={selectClass}
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-              disabled={isSubmitting}
-            >
-              <option value="">{t("products.noCategory")}</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <Label>
-              {t("products.name")}{" "}
-              <span className="text-error-500">{t("common.required")}</span>
-            </Label>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              disabled={isSubmitting}
-              error={Boolean(fieldErrors.name)}
-              hint={fieldErrors.name}
-              required
-            />
-          </div>
-
-          <div>
-            <Label>{t("products.purchasePrice")}</Label>
-            <Input
-              type="number"
-              step={0.01}
-              min="0"
-              value={purchasePrice}
-              onChange={(e) => setPurchasePrice(e.target.value)}
-              disabled={isSubmitting}
-              error={Boolean(fieldErrors.purchase_price)}
-              hint={fieldErrors.purchase_price}
-            />
-          </div>
-
-          <div>
-            <Label>
-              {t("products.salePrice")}{" "}
-              <span className="text-error-500">{t("common.required")}</span>
-            </Label>
-            <Input
-              type="number"
-              step={0.01}
-              min="0"
-              value={salePrice}
-              onChange={(e) => setSalePrice(e.target.value)}
-              disabled={isSubmitting}
-              error={Boolean(fieldErrors.sale_price)}
-              hint={fieldErrors.sale_price}
-              required
-            />
-          </div>
-
-          <div>
-            <Label>{t("products.image")}</Label>
-            <div className="mt-2 flex items-center gap-4">
-              {imagePreview ? (
-                <img
-                  src={imagePreview}
-                  alt=""
-                  className="size-16 rounded-lg object-cover border border-gray-200 dark:border-gray-700"
-                />
-              ) : (
-                <div className="size-16 rounded-lg bg-gray-100 dark:bg-gray-800" />
-              )}
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                disabled={isSubmitting}
-                onClick={() => imageInputRef.current?.click()}
-              >
-                {t("products.uploadImage")}
-              </Button>
-              <input
-                ref={imageInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                className="hidden"
-                onChange={(e) => handleImageSelect(e.target.files?.[0] ?? null)}
-              />
-            </div>
-          </div>
-
-          {isEdit && product && (
-            <>
-              <div>
-                <Label>{t("products.scanCode")}</Label>
-                <Input value={product.scan_code} disabled />
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  disabled={isPrintingQr}
-                  onClick={() => void handlePrintQr()}
-                >
-                  {isPrintingQr ? t("common.loading") : t("products.printQr")}
-                </Button>
-              </div>
-              <div>
-                <Label>{t("products.referencePhotos")}</Label>
-                <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">
-                  {t("products.referencePhotosHint", { count: referenceCount })}
-                </p>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  disabled={isUploadingReference || isSubmitting}
-                  onClick={() => referenceInputRef.current?.click()}
-                >
-                  {isUploadingReference
-                    ? t("products.uploadingReference")
-                    : t("products.addReferencePhoto")}
-                </Button>
-                <input
-                  ref={referenceInputRef}
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  multiple
-                  className="hidden"
-                  onChange={(e) => void handleReferenceSelect(e.target.files)}
-                />
-              </div>
-            </>
-          )}
-
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex shrink-0 justify-end gap-3 border-t border-gray-100 px-6 py-4 lg:px-8 dark:border-gray-800">
             <Button type="button" size="sm" variant="outline" onClick={onClose} disabled={isSubmitting}>
               {t("common.cancel")}
             </Button>

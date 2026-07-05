@@ -21,6 +21,7 @@ const ShopsPage = lazy(() => import("./pages/Shops/ShopsPage"));
 const ShopLocationsPage = lazy(() => import("./pages/Shops/ShopLocationsPage"));
 const CategoriesPage = lazy(() => import("./pages/Catalog/CategoriesPage"));
 const ProductsPage = lazy(() => import("./pages/Catalog/ProductsPage"));
+const ProductDetailPage = lazy(() => import("./pages/Catalog/ProductDetailPage"));
 const LocationStockPage = lazy(() => import("./pages/Stock/LocationStockPage"));
 const StockAlertsPage = lazy(() => import("./pages/Stock/StockAlertsPage"));
 const SalesListPage = lazy(() => import("./pages/Sales/SalesListPage"));
@@ -68,6 +69,7 @@ export default function App() {
                   <Route path="/shops/:shopId/locations" element={<ShopLocationsPage />} />
                   <Route path="/categories" element={<CategoriesPage />} />
                   <Route path="/products" element={<ProductsPage />} />
+                  <Route path="/products/:id" element={<ProductDetailPage />} />
                   <Route
                     path="/shops/:shopId/locations/:locationId/stock"
                     element={<LocationStockPage />}

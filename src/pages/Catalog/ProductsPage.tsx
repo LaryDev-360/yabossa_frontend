@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router";
 import { ApiError } from "../../api/errors";
 import { useAuth } from "../../auth/AuthContext";
 import { canManageCatalog } from "../../auth/roles";
@@ -23,7 +24,7 @@ import { listShops } from "../../features/shops/api";
 import type { Shop } from "../../features/shops/types";
 import { useConfirm } from "../../context/ConfirmContext";
 import { useTranslation } from "../../i18n/I18nContext";
-import { PencilIcon, PlusIcon } from "../../icons";
+import { EyeIcon, PencilIcon, PlusIcon } from "../../icons";
 
 export default function ProductsPage() {
   const { t } = useTranslation();
@@ -184,7 +185,14 @@ export default function ProductsPage() {
                         <div className="size-10 rounded-lg bg-gray-100 dark:bg-gray-800" />
                       )}
                     </TableCell>
-                    <TableCell className={tableCol.primary}>{product.name}</TableCell>
+                    <TableCell className={tableCol.primary}>
+                      <Link
+                        to={`/products/${product.id}`}
+                        className="font-medium text-brand-500 hover:underline"
+                      >
+                        {product.name}
+                      </Link>
+                    </TableCell>
                     <TableCell className={tableCol.muted}>
                       {shopNames[product.shop] ?? product.shop}
                     </TableCell>
@@ -207,6 +215,13 @@ export default function ProductsPage() {
                     </TableCell>
                     <TableCell className={`${tableCol.actions} ${tableCol.actionsCell}`}>
                       <div className="inline-flex flex-wrap items-center justify-end gap-2">
+                        <Link
+                          to={`/products/${product.id}`}
+                          className="p-1.5 text-gray-500 hover:text-brand-500"
+                          aria-label={t("products.viewProduct")}
+                        >
+                          <EyeIcon className="size-4" />
+                        </Link>
                         {canWrite && (
                           <>
                             <button
