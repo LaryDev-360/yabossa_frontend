@@ -148,6 +148,9 @@ export default function ProductsPage() {
             <Table>
               <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                 <TableRow>
+                  <TableCell isHeader className={tableCol.muted}>
+                    {t("products.image")}
+                  </TableCell>
                   <TableCell isHeader>{t("products.name")}</TableCell>
                   <TableCell isHeader className={tableCol.muted}>
                     {t("products.shop")}
@@ -169,6 +172,17 @@ export default function ProductsPage() {
               <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                 {visibleProducts.map((product) => (
                   <TableRow key={product.id}>
+                    <TableCell className={tableCol.muted}>
+                      {product.image_url ? (
+                        <img
+                          src={product.image_url}
+                          alt=""
+                          className="size-10 rounded-lg object-cover border border-gray-100 dark:border-gray-800"
+                        />
+                      ) : (
+                        <div className="size-10 rounded-lg bg-gray-100 dark:bg-gray-800" />
+                      )}
+                    </TableCell>
                     <TableCell className={tableCol.primary}>{product.name}</TableCell>
                     <TableCell className={tableCol.muted}>
                       {shopNames[product.shop] ?? product.shop}

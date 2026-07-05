@@ -221,6 +221,34 @@ When **`ActiveSubscriptionPermission`** blocks a write, show a clear upgrade/ren
 
 ---
 
+## Phase F8 — Product images & visual POS
+
+**Status: implemented**
+
+### Catalog
+
+- **`/products`** — thumbnail column; product form supports display image upload, read-only **`scan_code`**, **Print QR**, and reference photo enrollment (edit mode).
+- API helpers in **`features/catalog/api.ts`**: `uploadProductImage`, `uploadReferenceImage`, `lookupProduct`, `visualMatchProduct`, `openProductQrPrint`.
+
+### POS (`/sales/new`)
+
+- **Modes:** Search | Scan QR | Visual.
+- **QR:** USB wedge input (Enter → lookup) + **`@zxing/browser`** camera overlay.
+- **Visual:** camera preview → capture frame → `POST /products/visual-match/` → top-3 confirm modal; high-confidence **`auto_add`** with 3s undo toast.
+- Cart lines show product thumbnails when available.
+
+### i18n
+
+- EN/FR strings for scan errors, QR print, mode labels, visual match, auto-add undo.
+
+### Manual test checklist
+
+1. Upload product photo + print QR sticker.
+2. POS Scan QR (wedge or camera) → product added with stock check.
+3. Add 2–3 reference photos → Visual mode → correct product in top-3 or auto-add when confident.
+
+---
+
 ## Phase F7 — Production & quality
 
 **Status: not started** (client half of backend Phase 7)
@@ -286,6 +314,7 @@ F0 (API + auth shell)
   → F4 (sales / POS)
   → F5 (subscription UX + gates) — can start banner in parallel with F2
   → F6 (dashboard — needs F4 data for meaningful charts)
+  → F8 (product images, QR scan, visual POS)
   → F7 (build, deploy, hardening)
 ```
 
@@ -327,6 +356,7 @@ Run backend on **8001** (or proxy target). Open Swagger at `http://127.0.0.1:800
 | F4 | Sales / POS | **Implemented** |
 | F5 | Subscription UI & gates | **Implemented** |
 | F6 | Dashboard wired to `/dashboard/summary/` | **Implemented** |
+| F8 | Product images, QR scan, visual POS | **Implemented** |
 | F7 | Production build & deploy | Not started |
 
 Update this table as phases complete.

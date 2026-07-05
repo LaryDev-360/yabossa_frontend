@@ -47,6 +47,8 @@ export interface PosProductOption {
   name: string;
   salePrice: string;
   stockQuantity: number;
+  scanCode?: string;
+  imageUrl?: string | null;
 }
 
 export interface CartLine {
@@ -55,4 +57,5 @@ export interface CartLine {
   unitPrice: string;
   quantity: number;
   maxQuantity: number;
+  imageUrl?: string | null;
 }
