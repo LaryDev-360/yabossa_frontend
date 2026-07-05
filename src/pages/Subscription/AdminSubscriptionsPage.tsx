@@ -18,12 +18,14 @@ import SubscriptionEditModal from "../../features/subscriptions/components/Subsc
 import { listSubscriptions } from "../../features/subscriptions/api";
 import { subscriptionStatusBadgeColor } from "../../features/subscriptions/statusBadge";
 import type { Subscription } from "../../features/subscriptions/types";
-import { formatDate, formatMoney } from "../../features/shared/format";
+import { formatDate } from "../../features/shared/format";
+import { useFormatMoney } from "../../features/shared/useFormatMoney";
 import { useTranslation } from "../../i18n/I18nContext";
 import { PencilIcon } from "../../icons";
 
 export default function AdminSubscriptionsPage() {
   const { t, locale } = useTranslation();
+  const formatMoney = useFormatMoney();
   const { user } = useAuth();
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -120,7 +122,7 @@ export default function AdminSubscriptionsPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className={tableCol.muted}>
-                      {formatMoney(sub.monthly_price, locale)}
+                      {formatMoney(sub.monthly_price)}
                     </TableCell>
                     <TableCell className={tableCol.muted}>
                       {sub.trial_end_date ? formatDate(sub.trial_end_date, locale) : "—"}

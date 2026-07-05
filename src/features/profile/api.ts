@@ -5,6 +5,7 @@ export type UpdateProfilePayload = {
   full_name?: string;
   business_name?: string;
   phone_number?: string;
+  currency_code?: string;
 };
 
 export interface ChangePasswordPayload {

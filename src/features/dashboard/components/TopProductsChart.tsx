@@ -2,15 +2,16 @@ import Chart from "react-apexcharts";
 import type { ApexOptions } from "apexcharts";
 import { useMemo } from "react";
 import { useTranslation } from "../../../i18n/I18nContext";
+import { useCurrencyCode } from "../../shared/useFormatMoney";
 import type { DashboardTopProduct } from "../types";
 
 interface TopProductsChartProps {
   products: DashboardTopProduct[];
-  locale: string;
 }
 
-export default function TopProductsChart({ products, locale }: TopProductsChartProps) {
-  const { t } = useTranslation();
+export default function TopProductsChart({ products }: TopProductsChartProps) {
+  const { t, locale } = useTranslation();
+  const currency = useCurrencyCode();
 
   const { categories, revenues } = useMemo(() => {
     const top = products.slice(0, 8);
@@ -41,9 +42,11 @@ export default function TopProductsChart({ products, locale }: TopProductsChartP
       categories,
       labels: {
         formatter: (val) =>
-          new Intl.NumberFormat(locale, { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(
-            Number(val),
-          ),
+          new Intl.NumberFormat(locale, {
+            style: "currency",
+            currency,
+            maximumFractionDigits: 0,
+          }).format(Number(val)),
       },
     },
     yaxis: {
@@ -59,7 +62,7 @@ export default function TopProductsChart({ products, locale }: TopProductsChartP
     tooltip: {
       y: {
         formatter: (val) =>
-          new Intl.NumberFormat(locale, { style: "currency", currency: "EUR" }).format(val),
+          new Intl.NumberFormat(locale, { style: "currency", currency }).format(val),
       },
     },
   };

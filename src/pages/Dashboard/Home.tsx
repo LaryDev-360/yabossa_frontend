@@ -18,7 +18,8 @@ import { defaultDashboardPeriod, getDashboardSummary } from "../../features/dash
 import DashboardKpiCard from "../../features/dashboard/components/DashboardKpiCard";
 import TopProductsChart from "../../features/dashboard/components/TopProductsChart";
 import type { DashboardSummary } from "../../features/dashboard/types";
-import { formatDate, formatMoney } from "../../features/shared/format";
+import { formatDate } from "../../features/shared/format";
+import { useFormatMoney } from "../../features/shared/useFormatMoney";
 import { listShops } from "../../features/shops/api";
 import type { Shop } from "../../features/shops/types";
 import { useTranslation } from "../../i18n/I18nContext";
@@ -32,6 +33,7 @@ import {
 
 export default function Home() {
   const { t, locale } = useTranslation();
+  const formatMoney = useFormatMoney();
   const { user } = useAuth();
 
   const defaults = useMemo(() => defaultDashboardPeriod(), []);
@@ -164,12 +166,12 @@ export default function Home() {
             />
             <DashboardKpiCard
               label={t("dashboard.revenue")}
-              value={formatMoney(summary.sales.revenue_total, locale)}
+              value={formatMoney(summary.sales.revenue_total)}
               icon={<DollarLineIcon className="size-6 text-gray-800 dark:text-white/90" />}
             />
             <DashboardKpiCard
               label={t("dashboard.profit")}
-              value={formatMoney(summary.sales.profit_total, locale)}
+              value={formatMoney(summary.sales.profit_total)}
               icon={<ShootingStarIcon className="size-6 text-gray-800 dark:text-white/90" />}
             />
             <DashboardKpiCard
@@ -194,7 +196,7 @@ export default function Home() {
               <h3 className="mb-4 text-lg font-semibold text-gray-800 dark:text-white/90">
                 {t("dashboard.topProducts")}
               </h3>
-              <TopProductsChart products={summary.top_products} locale={locale} />
+              <TopProductsChart products={summary.top_products} />
             </div>
           </div>
 
@@ -227,7 +229,7 @@ export default function Home() {
                           <TableCell className={tableCol.primary}>{row.product_name}</TableCell>
                           <TableCell className={tableCol.muted}>{row.quantity_sold}</TableCell>
                           <TableCell className={tableCol.muted}>
-                            {formatMoney(row.revenue, locale)}
+                            {formatMoney(row.revenue)}
                           </TableCell>
                         </TableRow>
                       ))}

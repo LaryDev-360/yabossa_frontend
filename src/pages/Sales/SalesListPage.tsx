@@ -15,13 +15,15 @@ import {
 import { tableCol } from "../../components/ui/table/tableClasses";
 import { loadLocationOptions, listSales } from "../../features/sales/api";
 import type { Sale } from "../../features/sales/types";
-import { formatDateTime, formatMoney } from "../../features/shared/format";
+import { formatDateTime } from "../../features/shared/format";
+import { useFormatMoney } from "../../features/shared/useFormatMoney";
 import { useAuth } from "../../auth/AuthContext";
 import { useTranslation } from "../../i18n/I18nContext";
 import { PlusIcon } from "../../icons";
 
 export default function SalesListPage() {
   const { t, locale } = useTranslation();
+  const formatMoney = useFormatMoney();
   const { user } = useAuth();
 
   const [sales, setSales] = useState<Sale[]>([]);
@@ -118,10 +120,10 @@ export default function SalesListPage() {
                       {formatDateTime(sale.sold_at, locale)}
                     </TableCell>
                     <TableCell className={tableCol.muted}>
-                      {formatMoney(sale.total_amount, locale)}
+                      {formatMoney(sale.total_amount)}
                     </TableCell>
                     <TableCell className={tableCol.muted}>
-                      {formatMoney(sale.estimated_profit, locale)}
+                      {formatMoney(sale.estimated_profit)}
                     </TableCell>
                   </TableRow>
                 ))}

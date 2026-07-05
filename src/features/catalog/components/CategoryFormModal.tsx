@@ -116,6 +116,7 @@ export default function CategoryFormModal({
               onChange={setDescription}
               disabled={isSubmitting}
               rows={3}
+              placeholder={t("common.descriptionPlaceholder")}
             />
           </div>
 

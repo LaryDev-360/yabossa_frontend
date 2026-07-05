@@ -3,6 +3,7 @@ export type UserRole = "MERCHANT" | "ADMIN" | "CASHIER";
 export interface MeMerchant {
   business_name: string;
   phone_number: string | null;
+  currency_code: string;
 }
 
 export interface MeCashier {
@@ -24,6 +25,7 @@ export interface User {
   email_verified_at: string | null;
   created_at: string;
   updated_at: string;
+  currency_code: string;
   merchant: MeMerchant | null;
   cashier: MeCashier | null;
   admin: MeAdmin | null;

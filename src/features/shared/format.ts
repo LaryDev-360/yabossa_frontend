@@ -1,4 +1,8 @@
-export function formatMoney(value: string | number | null | undefined, locale = "en"): string {
+export function formatMoney(
+  value: string | number | null | undefined,
+  locale = "en",
+  currency = "XOF",
+): string {
   if (value === null || value === undefined || value === "") {
     return "—";
   }
@@ -6,7 +10,7 @@ export function formatMoney(value: string | number | null | undefined, locale = 
   if (Number.isNaN(num)) {
     return String(value);
   }
-  return new Intl.NumberFormat(locale, { style: "currency", currency: "EUR" }).format(num);
+  return new Intl.NumberFormat(locale, { style: "currency", currency }).format(num);
 }
 
 export function formatDate(iso: string, locale: string): string {

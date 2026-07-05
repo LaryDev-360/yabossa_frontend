@@ -14,7 +14,8 @@ import {
 import { tableCol } from "../../components/ui/table/tableClasses";
 import { getSale, loadLocationOptions } from "../../features/sales/api";
 import type { Sale } from "../../features/sales/types";
-import { formatDateTime, formatMoney } from "../../features/shared/format";
+import { formatDateTime } from "../../features/shared/format";
+import { useFormatMoney } from "../../features/shared/useFormatMoney";
 import { useAuth } from "../../auth/AuthContext";
 import { useTranslation } from "../../i18n/I18nContext";
 import { ChevronLeftIcon } from "../../icons";
@@ -22,6 +23,7 @@ import { ChevronLeftIcon } from "../../icons";
 export default function SaleDetailPage() {
   const { id = "" } = useParams();
   const { t, locale } = useTranslation();
+  const formatMoney = useFormatMoney();
   const { user } = useAuth();
 
   const [sale, setSale] = useState<Sale | null>(null);
@@ -104,13 +106,13 @@ export default function SaleDetailPage() {
               <div>
                 <dt className="text-xs text-gray-500 dark:text-gray-400">{t("sales.total")}</dt>
                 <dd className="mt-1 text-sm font-medium text-gray-800 dark:text-white/90">
-                  {formatMoney(sale.total_amount, locale)}
+                  {formatMoney(sale.total_amount)}
                 </dd>
               </div>
               <div>
                 <dt className="text-xs text-gray-500 dark:text-gray-400">{t("sales.profit")}</dt>
                 <dd className="mt-1 text-sm font-medium text-gray-800 dark:text-white/90">
-                  {formatMoney(sale.estimated_profit, locale)}
+                  {formatMoney(sale.estimated_profit)}
                 </dd>
               </div>
             </dl>
@@ -148,13 +150,13 @@ export default function SaleDetailPage() {
                       <TableCell className={tableCol.primary}>{item.product_name}</TableCell>
                       <TableCell className={tableCol.muted}>{item.quantity}</TableCell>
                       <TableCell className={tableCol.muted}>
-                        {formatMoney(item.unit_sale_price, locale)}
+                        {formatMoney(item.unit_sale_price)}
                       </TableCell>
                       <TableCell className={tableCol.muted}>
-                        {formatMoney(item.line_total, locale)}
+                        {formatMoney(item.line_total)}
                       </TableCell>
                       <TableCell className={tableCol.muted}>
-                        {formatMoney(item.line_profit, locale)}
+                        {formatMoney(item.line_profit)}
                       </TableCell>
                     </TableRow>
                   ))}

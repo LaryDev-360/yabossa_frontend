@@ -32,7 +32,7 @@ import {
   newSaleReference,
 } from "../../features/sales/api";
 import type { CartLine, LocationOption, PosProductOption } from "../../features/sales/types";
-import { formatMoney } from "../../features/shared/format";
+import { useFormatMoney } from "../../features/shared/useFormatMoney";
 import { listLocationStock } from "../../features/stock/api";
 import { useTranslation } from "../../i18n/I18nContext";
 import { ChevronLeftIcon, PlusIcon, TrashBinIcon } from "../../icons";
@@ -44,7 +44,8 @@ function cartTotal(lines: CartLine[]): number {
 }
 
 export default function NewSalePage() {
-  const { t, locale } = useTranslation();
+  const { t } = useTranslation();
+  const formatMoney = useFormatMoney();
   const { user } = useAuth();
   const navigate = useNavigate();
   const wedgeInputRef = useRef<HTMLInputElement>(null);
@@ -564,7 +565,7 @@ export default function NewSalePage() {
                               {product.name}
                             </p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {formatMoney(product.salePrice, locale)} ·{" "}
+                              {formatMoney(product.salePrice)} ·{" "}
                               {t("sales.inStock", { count: product.stockQuantity })}
                             </p>
                           </div>
@@ -623,7 +624,7 @@ export default function NewSalePage() {
                               <div>
                                 <span className="block text-sm">{line.name}</span>
                                 <span className="text-xs text-gray-500">
-                                  {formatMoney(line.unitPrice, locale)}
+                                  {formatMoney(line.unitPrice)}
                                 </span>
                               </div>
                             </div>
@@ -665,7 +666,7 @@ export default function NewSalePage() {
                     {t("sales.cartTotal")}
                   </span>
                   <span className="text-lg font-semibold text-gray-800 dark:text-white/90">
-                    {formatMoney(total, locale)}
+                    {formatMoney(total)}
                   </span>
                 </div>
 
@@ -698,7 +699,6 @@ export default function NewSalePage() {
         <VisualMatchModal
           isOpen
           matches={visualMatches}
-          locale={locale}
           onSelect={(match) => {
             addFromVisualMatch(match);
             setVisualMatches(null);

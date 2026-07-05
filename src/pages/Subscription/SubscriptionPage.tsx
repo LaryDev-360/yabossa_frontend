@@ -7,11 +7,13 @@ import Alert from "../../components/ui/alert/Alert";
 import Badge from "../../components/ui/badge/Badge";
 import { useSubscription } from "../../context/SubscriptionContext";
 import { subscriptionStatusBadgeColor } from "../../features/subscriptions/statusBadge";
-import { formatDate, formatMoney } from "../../features/shared/format";
+import { formatDate } from "../../features/shared/format";
+import { useFormatMoney } from "../../features/shared/useFormatMoney";
 import { useTranslation } from "../../i18n/I18nContext";
 
 export default function SubscriptionPage() {
   const { t, locale } = useTranslation();
+  const formatMoney = useFormatMoney();
   const { user } = useAuth();
   const { subscription, isLoading, refresh } = useSubscription();
 
@@ -65,7 +67,7 @@ export default function SubscriptionPage() {
                   {t("subscription.monthlyPrice")}
                 </dt>
                 <dd className="mt-1 text-sm font-medium text-gray-800 dark:text-white/90">
-                  {formatMoney(subscription.monthly_price, locale)}
+                  {formatMoney(subscription.monthly_price)}
                 </dd>
               </div>
               <div>

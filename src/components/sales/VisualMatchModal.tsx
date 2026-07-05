@@ -1,13 +1,12 @@
 import Button from "../ui/button/Button";
 import { Modal } from "../ui/modal";
 import type { VisualMatchItem } from "../../features/catalog/types";
-import { formatMoney } from "../../features/shared/format";
+import { useFormatMoney } from "../../features/shared/useFormatMoney";
 import { useTranslation } from "../../i18n/I18nContext";
 
 interface VisualMatchModalProps {
   isOpen: boolean;
   matches: VisualMatchItem[];
-  locale: string;
   onSelect: (match: VisualMatchItem) => void;
   onClose: () => void;
 }
@@ -15,11 +14,11 @@ interface VisualMatchModalProps {
 export default function VisualMatchModal({
   isOpen,
   matches,
-  locale,
   onSelect,
   onClose,
 }: VisualMatchModalProps) {
   const { t } = useTranslation();
+  const formatMoney = useFormatMoney();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="max-w-lg m-4">
@@ -54,7 +53,7 @@ export default function VisualMatchModal({
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-gray-800 dark:text-white/90">{match.name}</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {formatMoney(match.sale_price, locale)} ·{" "}
+                      {formatMoney(match.sale_price)} ·{" "}
                       {t("sales.visualMatchConfidence", {
                         percent: Math.round(match.score * 100),
                       })}

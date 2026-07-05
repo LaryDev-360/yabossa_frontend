@@ -4,6 +4,7 @@ import type { User } from "../../../api/types";
 import { ApiError, getFieldError } from "../../../api/errors";
 import { useAuth } from "../../../auth/AuthContext";
 import { useTranslation } from "../../../i18n/I18nContext";
+import { SUPPORTED_CURRENCY_CODES } from "../../shared/currencies";
 import { updateProfile, type UpdateProfilePayload } from "../api";
 import Label from "../../../components/form/Label";
 import Input from "../../../components/form/input/InputField";
@@ -23,6 +24,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
   const [phoneNumber, setPhoneNumber] = useState(
     user.merchant?.phone_number ?? user.cashier?.phone_number ?? "",
   );
+  const [currencyCode, setCurrencyCode] = useState(user.currency_code);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -32,6 +34,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
     setFullName(user.full_name);
     setBusinessName(user.merchant?.business_name ?? "");
     setPhoneNumber(user.merchant?.phone_number ?? user.cashier?.phone_number ?? "");
+    setCurrencyCode(user.currency_code);
   }, [user]);
 
   async function handleSubmit(e: FormEvent) {
@@ -46,6 +49,7 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
     if (user.role === "MERCHANT") {
       payload.business_name = businessName.trim();
       payload.phone_number = phoneNumber.trim();
+      payload.currency_code = currencyCode;
     } else if (user.role === "CASHIER") {
       payload.phone_number = phoneNumber.trim();
     }
@@ -72,6 +76,9 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
       setIsSubmitting(false);
     }
   }
+
+  const selectClass =
+    "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm shadow-theme-xs focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90";
 
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
@@ -148,6 +155,30 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
             </div>
           )}
 
+          {user.role === "MERCHANT" && (
+            <div className="lg:col-span-2">
+              <Label>{t("profile.currency")}</Label>
+              <select
+                className={selectClass}
+                value={currencyCode}
+                onChange={(e) => setCurrencyCode(e.target.value)}
+                disabled={isSubmitting}
+              >
+                {SUPPORTED_CURRENCY_CODES.map((code) => (
+                  <option key={code} value={code}>
+                    {t(`currency.${code}`)}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
+                {t("profile.currencyHint")}
+              </p>
+              {fieldErrors.currency_code && (
+                <p className="mt-1.5 text-xs text-error-500">{fieldErrors.currency_code}</p>
+              )}
+            </div>
+          )}
+
           {(user.role === "MERCHANT" || user.role === "CASHIER") && (
             <div className="lg:col-span-2">
               <Label>{t("profile.phoneNumber")}</Label>
@@ -160,6 +191,16 @@ export default function ProfileEditForm({ user }: ProfileEditFormProps) {
                 hint={fieldErrors.phone_number}
                 placeholder={t("profile.phonePlaceholder")}
               />
+            </div>
+          )}
+
+          {user.role === "CASHIER" && (
+            <div className="lg:col-span-2">
+              <Label>{t("profile.currency")}</Label>
+              <Input type="text" value={t(`currency.${user.currency_code}`)} disabled />
+              <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
+                {t("profile.currencyInheritedHint")}
+              </p>
             </div>
           )}
 

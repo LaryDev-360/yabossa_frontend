@@ -140,6 +140,7 @@ export default function ShopFormModal({
               onChange={setDescription}
               disabled={isSubmitting}
               rows={3}
+              placeholder={t("common.descriptionPlaceholder")}
             />
           </div>
 

@@ -18,7 +18,7 @@ import { tableCol } from "../../components/ui/table/tableClasses";
 import { listCategories, listProducts, updateProduct } from "../../features/catalog/api";
 import ProductFormModal from "../../features/catalog/components/ProductFormModal";
 import type { Category, Product } from "../../features/catalog/types";
-import { formatMoney } from "../../features/shared/format";
+import { useFormatMoney } from "../../features/shared/useFormatMoney";
 import { listShops } from "../../features/shops/api";
 import type { Shop } from "../../features/shops/types";
 import { useConfirm } from "../../context/ConfirmContext";
@@ -26,7 +26,8 @@ import { useTranslation } from "../../i18n/I18nContext";
 import { PencilIcon, PlusIcon } from "../../icons";
 
 export default function ProductsPage() {
-  const { t, locale } = useTranslation();
+  const { t } = useTranslation();
+  const formatMoney = useFormatMoney();
   const { confirm } = useConfirm();
   const { user } = useAuth();
   const canWrite = canManageCatalog(user?.role);
@@ -191,7 +192,7 @@ export default function ProductsPage() {
                       {product.category ? categoryNames[product.category] ?? "—" : "—"}
                     </TableCell>
                     <TableCell className={`${tableCol.status} ${tableCol.primary}`}>
-                      {formatMoney(product.sale_price, locale)}
+                      {formatMoney(product.sale_price)}
                     </TableCell>
                     <TableCell className={tableCol.status}>
                       {product.is_archived ? (
